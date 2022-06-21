@@ -22,23 +22,36 @@ class Level:
                     self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
-        # to do - update and draw game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
+
+        # General setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
+
+        # Get width, height, and offset
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
+        self.offset = pygame.math.Vector2()
 
-        self.offset = pygame.math.Vector2(400, 400)
+        # Create the floor image
+        self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
+        self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
 
     def custom_draw(self, player):
+
+        # Get offset from the player object/class
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
-        for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image, offset_pos)
 
+        # Draw the floor map
+        floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, floor_offset_pos)
+
+        # Draw all sprites by order of y-values, so drawing overlap looks correct
+        for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
+            sprite_offset_pos = sprite.rect.topleft - self.offset
+            self.display_surface.blit(sprite.image, sprite_offset_pos)
