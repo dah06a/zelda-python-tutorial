@@ -14,16 +14,17 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        # Create a dictionary of layouts from imported images and files to layer on game surface
+        # Create a dictionary of layouts from imported files to find WHERE to layer on game surface
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
             'grass': import_csv_layout('../map/map_Grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv')
         }
 
-        # Create a dictionary of graphics/images to access in map creation
+        # Create a dictionary of graphics/images to USE when layering/creating game surface map
         graphics = {
-            'grass': import_folder('../graphics/Grass')
+            'grass': import_folder('../graphics/grass'),
+            'objects': import_folder('../graphics/objects')
         }
 
         for style, layout in layouts.items():
@@ -38,12 +39,9 @@ class Level:
                             random_grass = choice(graphics['grass'])
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass)
                         if style == 'object':
-                            pass
+                            surf_objects = graphics['objects'][int(col)]
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf_objects)
 
-        #         if col == 'x':
-        #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
-        #         if col == 'p':
-        #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
         self.player = Player((2000, 1500), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
