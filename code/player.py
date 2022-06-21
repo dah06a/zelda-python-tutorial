@@ -61,7 +61,6 @@ class Player(pygame.sprite.Sprite):
                     if self.direction.y < 0: # Moving up
                         self.hitbox.top = sprite.hitbox.bottom
                     
-
     def update(self):
         self.input()
         self.move(self.speed)
