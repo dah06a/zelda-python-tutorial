@@ -42,7 +42,7 @@ class Level:
                             surf_objects = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf_objects)
 
-        self.player = Player((2000, 1500), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000, 1300), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
