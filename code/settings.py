@@ -4,6 +4,15 @@ HEIGTH   = 704
 FPS      = 60
 TILESIZE = 64
 
+# weapons
+weapon_data = {
+    'sword': { 'cooldown': 100, 'damage': 15, 'graphic': '../graphics/weapons/sword/full.png' },
+    'lance': { 'cooldown': 400, 'damage': 30, 'graphic': '../graphics/weapons/lance/full.png' },
+    'axe': { 'cooldown': 300, 'damage': 20, 'graphic': '../graphics/weapons/axe/full.png' },
+    'rapier':{ 'cooldown': 50, 'damage': 8, 'graphic': '../graphics/weapons/rapier/full.png' },
+    'sai': { 'cooldown': 80, 'damage': 10, 'graphic': '../graphics/weapons/sai/full.png' }
+}
+
 # Leaving world map for reference on map creation
 # Now building world map through layout files instead
 

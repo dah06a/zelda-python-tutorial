@@ -1,9 +1,10 @@
+from venv import create
 import pygame
 from settings import *
 from support import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites):
+    def __init__(self, pos, groups, obstacle_sprites, create_attack):
         # General player setups for super methods and pygame image/rect
         super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
@@ -22,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
+        self.create_attack = create_attack
 
         self.obstacle_sprites = obstacle_sprites
     
@@ -62,13 +64,13 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = 0
 
             # Regular attack input
-            if keys[pygame.K_SPACE] and not self.attacking:
+            if keys[pygame.K_SPACE]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                print('attack')
+                self.create_attack()
 
             # Magic attack input
-            if keys[pygame.K_LCTRL] and not self.attacking:
+            if keys[pygame.K_LCTRL]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 print('magic')
