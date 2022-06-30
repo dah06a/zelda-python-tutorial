@@ -5,6 +5,7 @@ from player import Player
 from support import *
 from random import choice
 from weapon import Weapon
+from ui import UI
 from debug import debug
 
 class Level:
@@ -21,6 +22,9 @@ class Level:
 
         # Sprite main setup
         self.create_map()
+
+        # User interface
+        self.ui = UI()
 
     def create_map(self):
         # Create a dictionary of layouts from imported files to find WHERE to layer on game surface
@@ -64,7 +68,7 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.status)
+        self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
