@@ -31,6 +31,12 @@ weapon_data = {
     'sai': { 'cooldown': 80, 'damage': 10, 'graphic': '../graphics/weapons/sai/full.png' }
 }
 
+# Magic
+magic_data = {
+    'flame': { 'strength': 5, 'cost': 20, 'graphic': '../graphics/particles/flame/fire.png' },
+    'flame': { 'strength': 20, 'cost': 10, 'graphic': '../graphics/particles/heal/heal.png' },
+}
+
 # Leaving world map for reference on map creation
 # Now building world map through layout files instead
 
