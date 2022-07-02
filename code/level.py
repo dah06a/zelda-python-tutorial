@@ -1,13 +1,14 @@
 import pygame
+from particles import AnimationPlayer
 from settings import *
 from tile import Tile
 from player import Player
 from enemy import Enemy
 from support import *
-from random import choice
+from random import choice, randint
 from weapon import Weapon
+from particles import AnimationPlayer
 from ui import UI
-from debug import debug
 
 class Level:
     def __init__(self):
@@ -29,6 +30,9 @@ class Level:
 
         # User interface
         self.ui = UI()
+
+        # Particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         # Create a dictionary of layouts from imported files to find WHERE to layer on game surface
@@ -105,6 +109,10 @@ class Level:
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == 'grass':
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0, 75)
+                            for leaf in range(randint(3, 6)):
+                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player, attack_sprite.sprite_type)
@@ -114,8 +122,8 @@ class Level:
             self.player.health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
+            self.animation_player.create_particles(attack_type, self.player.rect.center, [self.visible_sprites])
 
-            # particles
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
