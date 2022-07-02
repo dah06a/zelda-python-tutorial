@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from tile import Tile
 from player import Player
+from enemy import Enemy
 from support import *
 from random import choice
 from weapon import Weapon
@@ -31,7 +32,8 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
             'grass': import_csv_layout('../map/map_Grass.csv'),
-            'object': import_csv_layout('../map/map_Objects.csv')
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
         }
 
         # Create a dictionary of graphics/images to USE when layering/creating game surface map
@@ -48,21 +50,27 @@ class Level:
                         y = row_index * TILESIZE
                         if style == 'boundary':
                             Tile((x, y), [self.obstacle_sprites], 'invisible')
+
                         if style == 'grass':
                             random_grass = choice(graphics['grass'])
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass)
+
                         if style == 'object':
                             surf_objects = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf_objects)
 
-        self.player = Player(
-            (2000, 1300), 
-            [self.visible_sprites], 
-            self.obstacle_sprites, 
-            self.create_attack, 
-            self.destroy_attack,
-            self.create_magic
-        )
+                        if style == 'entities':
+                            if col == PLAYER_TILE_ID:
+                                self.player = Player(
+                                    (x, y), 
+                                    [self.visible_sprites], 
+                                    self.obstacle_sprites, 
+                                    self.create_attack, 
+                                    self.destroy_attack,
+                                    self.create_magic
+                                )
+                            else:
+                                Enemy('squid', (x, y), [self.visible_sprites])
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
