@@ -18,7 +18,7 @@ class Player(Entity):
 
         # Setup movement
         self.attacking = False
-        self.attack_cooldown = 400
+        self.attack_cooldown = 200
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
 
