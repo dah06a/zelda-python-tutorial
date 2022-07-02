@@ -93,20 +93,31 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 style = list(magic_data.keys())[self.magic_index]
-                strength = list(magic_data.values())[self.magic_index]['strength']
+                strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
                 cost = list(magic_data.values())[self.magic_index]['cost']
                 self.create_magic(style, strength, cost)
 
             # Switch weapon
             if keys[pygame.K_q] and self.can_switch_weapon:
-                print('switch')
                 self.can_switch_weapon = False
                 self.weapon_switch_time = pygame.time.get_ticks()
+
                 if self.weapon_index < len(list(weapon_data.keys())) - 1:
                     self.weapon_index += 1
                 else: 
                     self.weapon_index = 0
                 self.weapon = list(weapon_data.keys())[self.weapon_index]
+            
+            # Switch magic
+            if keys[pygame.K_e] and self.can_switch_magic:
+                self.can_switch_magic = False
+                self.magic_switch_time = pygame.time.get_ticks()
+
+                if self.magic_index < len(list(magic_data.keys())) - 1:
+                    self.magic_index += 1
+                else: 
+                    self.magic_index = 0
+                self.magic = list(magic_data.keys())[self.magic_index]
 
     def get_status(self):
         # Check idle status
@@ -168,6 +179,10 @@ class Player(pygame.sprite.Sprite):
         if not self.can_switch_weapon:
             if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True
+
+        if not self.can_switch_magic:
+            if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
+                self.can_switch_magic = True
 
     def animate(self):
         # Get all current animation image paths based on player status
