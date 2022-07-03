@@ -8,6 +8,7 @@ from support import *
 from random import choice, randint
 from weapon import Weapon
 from particles import AnimationPlayer
+from magic import MagicPlayer
 from ui import UI
 
 class Level:
@@ -33,6 +34,7 @@ class Level:
 
         # Particles
         self.animation_player = AnimationPlayer()
+        self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
         # Create a dictionary of layouts from imported files to find WHERE to layer on game surface
@@ -101,7 +103,11 @@ class Level:
         self.current_attack = None
 
     def create_magic(self, style, strength, cost):
-        print(style, strength, cost)
+        if style == 'heal':
+            self.magic_player.heal(self.player, strength, cost, [self.visible_sprites])
+
+        if style == 'flame':
+            self.magic_player.flame(self.player, cost, [self.visible_sprites, self.attack_sprites])
 
     def player_attack_logic(self):
         if self.attack_sprites:
@@ -112,7 +118,7 @@ class Level:
                         if target_sprite.sprite_type == 'grass':
                             pos = target_sprite.rect.center
                             offset = pygame.math.Vector2(0, 75)
-                            for leaf in range(randint(3, 6)):
+                            for _ in range(randint(3, 6)):
                                 self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
                             target_sprite.kill()
                         else:
